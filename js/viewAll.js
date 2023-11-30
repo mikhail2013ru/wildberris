@@ -1,9 +1,23 @@
-const getGoods = () => {
-    const links = document.querySelectorAll('.navigation-link')
+const viewAll = () => {
+    const ViewAllBtn = document.querySelector('.more')
+    const HideBtn = document.querySelector('.hide')
+    const shortGoods = document.querySelector('.short-goods')
+    
+    ViewAllBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        shortGoods.textContent = ''   
+        getData() 
+    })
+
+    HideBtn.addEventListener('click', (e) => {
+        e.preventDefault()
+        // shortGoods.textContent = ''   
+        getData(2) 
+    })
 
     const renderGoods = (goods) => {
-        const goodsContainer = document.querySelector('.long-goods-list')
-        goodsContainer.innerHTML = ''
+        const shortContainer = document.querySelector('.short-goods')
+        shortContainer.innerHTML = ''
         goods.forEach(({category, description, gender, id, img, label, name, offer, price}) => {
             const goodBlock = document.createElement('div')
             goodBlock.classList.add('col-lg-3')
@@ -19,39 +33,29 @@ const getGoods = () => {
                     </button>
                 </div>
             `
-            goodsContainer.append(goodBlock)
+            shortContainer.append(goodBlock)
         })
     }
 
-    const getData = (value, category) => {
+    const getData = (param) => {
         fetch('https://wildberris-524f3-default-rtdb.firebaseio.com/db.json')
         .then((response) => {
             return response.json()
         })
         .then((data) => {
-            const array = category ? data.filter((item) => item[category] === value) : data
-            localStorage.setItem('goods', JSON.stringify(array))
-            
-            if (window.location.pathname !== '/goods.html') {
-                window.location.href = '/goods.html'
+            if (param) {
+                const array = data.filter((item) => {
+                    return item.label.toLowerCase() === 'new'
+                }) 
+
+                const newArr = array.slice(2)
+
+                renderGoods(newArr)
             } else {
-                renderGoods(array)
+                renderGoods(data)
             }
         })
     }
-    
-    links.forEach((link) => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault()
-            const linkValue = link.textContent
-            const category = link.dataset.field            
-            getData(linkValue, category)
-        })
-    })
-
-    if (localStorage.getItem('goods') && window.location.pathname === '/goods.html') {
-        renderGoods(JSON.parse(localStorage.getItem('goods')))
-    }    
 }
 
-getGoods()
+viewAll()
