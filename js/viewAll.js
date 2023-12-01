@@ -11,7 +11,6 @@ const viewAll = () => {
 
     HideBtn.addEventListener('click', (e) => {
         e.preventDefault()
-        // shortGoods.textContent = ''   
         getData(2) 
     })
 

@@ -10,6 +10,13 @@ const cart = () => {
     closeBtn.addEventListener('click', () => {
         cart.style.display = 'none'
     })
+
+    cart.addEventListener('click', (e) => {
+        const target = e.target
+        if (!target.closest('.modal')) {
+            cart.style.display = 'none'
+        }
+    })
 }
 
 cart()
