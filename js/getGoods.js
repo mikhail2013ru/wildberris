@@ -23,6 +23,13 @@ const getGoods = () => {
         })
     }
 
+    const categoryLink = (goodCategory) => {
+        const secTitle = document.querySelector('.section-title')
+        secTitle.innerHTML = goodCategory
+        console.log(secTitle);
+        console.log(goodCategory);
+    }
+
     const getData = (value, category) => {
         fetch('https://wildberris-524f3-default-rtdb.firebaseio.com/db.json')
         .then((response) => {
@@ -31,18 +38,62 @@ const getGoods = () => {
         .then((data) => {
             const array = category ? data.filter((item) => item[category] === value) : data
             localStorage.setItem('goods', JSON.stringify(array))
+
+            const nav = document.querySelector('.navigation')
+            nav.addEventListener('click', (e) => {
+                const target = e.target
+                if (target.closest('.navigation-link')) {
+                    console.log(target.textContent);
+                    categoryLink(target.textContent)
+                }
+            })
+
+            renderGoods(array)
+                
             
-            if (window.location.pathname !== '/goods.html') {
-                window.location.href = '/goods.html'
-            } else {
-                renderGoods(array)
+            // if (window.location.pathname !== '/goods.html') {
+            //     window.location.href = '/goods.html'
+            //     nav.addEventListener('click', (e) => {
+            //         // window.location.href = '/goods.html'
+            //         const target = e.target
+            //         if (target.closest('.navigation-link')) {
+            //             categoryLink(target.textContent)
+            //         }
+            //     })
+            //     renderGoods(array)
+            // }
+
+
+            if (window.location.pathname === '/goods.html') {
+                // window.location.reload()
+                console.log(window.location);
+                // nav.addEventListener('click', (e) => {
+                //     // window.location.href = '/goods.html'
+                //     const target = e.target
+                //     if (target.closest('.navigation-link')) {
+                //         categoryLink(target.textContent)
+                //     }
+                // })
+                // renderGoods(array)
             }
+                // const navLink = document.querySelectorAll('.navigation-link')
+                // const arrayNav = navLink.map((item) => {
+                //     if (item.textContent.toLowerCase())
+                //     console.log(item.textContent);
+                // })
+                // console.log(itemId);
+            // console.log(array);
+            // renderGoods(array)
+                
+            // else {
+            //     // renderGoods(array)
+            // }
         })
     }
     
     links.forEach((link) => {
         link.addEventListener('click', (e) => {
-            e.preventDefault()
+            // e.preventDefault()
             const linkValue = link.textContent
             const category = link.dataset.field            
             getData(linkValue, category)
@@ -52,6 +103,8 @@ const getGoods = () => {
     if (localStorage.getItem('goods') && window.location.pathname === '/goods.html') {
         renderGoods(JSON.parse(localStorage.getItem('goods')))
     }    
+
+    
 }
 
 getGoods()
