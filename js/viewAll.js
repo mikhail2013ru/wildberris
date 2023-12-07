@@ -47,14 +47,18 @@ const viewAll = () => {
                     return item.label.toLowerCase() === 'new'
                 }) 
 
-                const newArr = array.slice(2)
-
-                renderGoods(newArr)
+                // const newArr = array.splice(4)
+                array.splice(4)
+                // console.log(array);
+                localStorage.setItem('goods', JSON.stringify(array))
+                renderGoods(array)
             } else {
                 renderGoods(data)
             }
         })
     }
+
+    getData(2)
 }
 
 viewAll()
