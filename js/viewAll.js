@@ -53,6 +53,7 @@ const viewAll = () => {
                 localStorage.setItem('goods', JSON.stringify(array))
                 renderGoods(array)
             } else {
+                localStorage.setItem('goods', JSON.stringify(data))
                 renderGoods(data)
             }
         })

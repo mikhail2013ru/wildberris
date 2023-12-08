@@ -1,7 +1,5 @@
 const shoppingCart = () => {
-    const shortContainer = document.querySelector('.short-goods')   
-    
-    
+    const shortContainer = document.querySelector('.short-goods')       
     shortContainer.addEventListener('click', (e) => {
         if (e.target.closest('.goods-card-btn')) {
             const buttonToCart = e.target.closest('.add-to-cart')
